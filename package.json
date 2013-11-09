@@ -1,0 +1,24 @@
+{
+  "name": "audiosync",
+  "version": "0.0.1",
+  "private": true,
+  "main ": "app.js",
+  "dependencies": {
+    "express": "~3.2.6",
+     "jade": "~0.31.2",
+     "dropbox": "0.x"
+  },
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-sass": "latest",
+    "grunt-reload": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-contrib-concat": "latest",
+    "grunt-contrib-copy": "latest",
+    "grunt-jade": "latest",
+    "grunt-concurrent": "latest",
+    "grunt-nodemon": "latest",
+    "grunt-contrib-coffee": "latest"}
+  }

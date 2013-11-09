@@ -1,0 +1,41 @@
+!!!
+!!! 5
+html(ng-app="dropboxApp")
+    head
+        meta(charset='utf8')
+        base(href='/')
+        title Audiosync
+        link(rel='stylesheet', href='/css/app.css')
+        link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootswatch/3.0.0/cosmo/bootstrap.min.css')
+        link(rel='stylesheet', href='/css/test.css')
+        link(rel='stylesheet', href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css")
+        body
+        div.navbar.navbar-inverse
+            div.container(ng-controller="FilesController")
+                div.navbar-header
+                    a.navbar-brand AUDIOSYNC
+                    i.icon-dropbox.pull-left.icon-large
+                ul.nav.navbar-nav.navbar-right
+                    li
+                        a#signin(href="#")
+                            i#loader.icon-spin.icon-spinner.icon-large
+                form.navbar-form.navbar-left
+                    input.form-control.col-lg-4(placeholder="Filtruj")
+        div.container
+            div.row
+                div.col-lg-3
+                    include partials\on_account
+                    include partials\playlist
+                div.col-lg-9
+                    div.panel.panel-default#player
+                    include partials\player
+                div.col-lg-9
+                    include partials\last_played
+        div.footer
+            div.navbar-fixed-bottom.container
+                p Artur Skowroński @ 2013
+        script(src='js/lib/angular/angular.js')
+        script(src='js/app.js')
+        script(src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.1/dropbox.min.js")
+       // script(src='js/dropbox.js')
+

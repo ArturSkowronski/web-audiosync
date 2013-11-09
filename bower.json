@@ -1,0 +1,13 @@
+{
+    "name": "Audiosync",
+    "version": "1.0.0",
+    "main": "audiosync.js",
+    "dependencies": {
+        "jquery": "latest",
+        "backbone-amd": "latest",
+        "underscore-amd": "latest"
+    },
+    "devDependencies": {
+        "requirejs": "latest"
+    }
+}

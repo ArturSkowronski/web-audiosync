@@ -1,0 +1,10 @@
+div.panel.panel-primary#playlist
+    div.panel-heading
+        span Playlist
+    div.panel-body#playlist(ng-controller="FilesController")
+        div(ng-repeat="file in files")
+            span.pull-right
+                i.icon-play.left-to-label
+                i.icon-remove.left-to-label
+            div
+                div {{file.name}}

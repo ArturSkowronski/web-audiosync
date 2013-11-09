@@ -1,0 +1,69 @@
+body {
+  background: #ecf0f1; }
+
+.left-to-label {
+  margin-left: 10px; }
+
+.margin-both {
+  margin-left: 25px;
+  margin-right: 5px; }
+
+audio {
+  width: 100%; }
+
+.icon-dropbox {
+  padding-top: 2px;
+  margin-left: 2px;
+  color: white; }
+
+#next-played {
+  margin-top: 2px; }
+
+#player hr {
+  margin-top: 10px;
+  margin-bottom: 10px; }
+
+#on-account .panel-body, #playlist .panel-body {
+  font-size: 11px; }
+  #on-account .panel-body hr, #playlist .panel-body hr {
+    margin-top: 10px;
+    margin-bottom: 10px; }
+
+.row > .span3 {
+  display: inline-block !important;
+  border: solid 1px red;
+  vertical-align: middle; }
+
+.banner {
+  width: 1000px; }
+
+a {
+  color: yellow; }
+
+#navbar {
+  border-bottom-color: #ce4dd6;
+  border-bottom-style: solid; }
+
+div .no-padding {
+  padding: 0; }
+
+button .full-width {
+  width: 100%; }
+
+footer {
+  color: #666666;
+  background: #222222;
+  padding: 17px 0 18px 0;
+  border-top: 1px solid black; }
+
+footer a {
+  color: #999999; }
+
+footer a:hover {
+  color: #efefef; }
+
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -63px; }

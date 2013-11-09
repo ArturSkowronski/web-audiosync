@@ -1,0 +1,11 @@
+div.panel.panel-primary#player
+    div.panel-heading
+        span Odtwarzanie
+    div.panel-body(ng-controller="FilesController")
+        audio(controls)
+            source(src="{{currentFile.source}}", type="audio/mp3")
+        hr
+        div
+            span {{currentFile.name}}
+            i.icon-time.icon-large.margin-both
+            span {{currentFile.currentPosition}} / {{currentFile.length}}
