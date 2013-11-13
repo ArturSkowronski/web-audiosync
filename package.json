@@ -5,8 +5,10 @@
   "main ": "app.js",
   "dependencies": {
     "express": "~3.2.6",
-     "jade": "~0.31.2",
-     "dropbox": "0.x"
+    "jade": "~0.31.2",
+    "dropbox": "0.x",
+    "socket.io": "~0.9.16",
+    "mongojs": "~0.9.6"
   },
   "devDependencies": {
     "grunt": "latest",
@@ -20,5 +22,6 @@
     "grunt-jade": "latest",
     "grunt-concurrent": "latest",
     "grunt-nodemon": "latest",
-    "grunt-contrib-coffee": "latest"}
+    "grunt-contrib-coffee": "latest"
   }
+}

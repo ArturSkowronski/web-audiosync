@@ -8,8 +8,7 @@ div.panel.panel-default#last_played
                 span.label.label-primary {{file.lastDevice}}
                 i.icon-apple.pull-right.icon-large
             span.left-to-label
-                button.icon-play.left-to-label(ng-click="AddToFileList()")
-                i.icon-plus.left-to-label
+                button.icon-plus.left-to-label(ng-click="AddToFileToPlaylist($index)")
             span.left-to-label
                 i.icon-calendar.left-to-label
             span.left-to-label {{file.lastListened}}

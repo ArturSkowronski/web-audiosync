@@ -4,12 +4,8 @@ div.panel.panel-primary#on-account
     div.panel-body#on_account(ng-controller="FilesController")
         div(ng-repeat="file in files")
             span.pull-right
-                i.icon-play.left-to-label
-                i.icon-refresh.left-to-label
-                i.icon-plus.left-to-label
+                i.icon-plus.left-to-label.clickable(ng-click="AddToFileToPlaylist($index)")
             div
                 div {{file.name}}
-                div
-                    i.icon-bar-chart
-                    span.left-to-label {{file.lastListened}} {{file.savedPosition}} / {{file.length}}
+                
             hr
