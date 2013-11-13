@@ -30,4 +30,6 @@ Project uses mongoDB as it's database. This NoSQL document-based database is wel
 * Preparing Test Suite for project
 * Rewriting JS modules to CoffeScript and CSS to SASS
 * Better usability of web client
+* Synchronizing playlist data between clients
+* Other than WebKit render support
 * Files prebuffering
