@@ -2,10 +2,13 @@
 Project is created to resolve problem synchronization of audio files (particulary Audiobooks) between many different devices. It remember time when user stopped listen music on device and give him opportunity to start it on the another one.
 
 #Project Dependency
-Project is developed using Dropbox JavaScript API and uses its storage to host audio files.
-Project uses node.js as it's server side and AngularJS as client framework. All dependencies and bindings are provided by npm && bower. 
-Project is host locally by grunt throught nodeman. 
-Project uses mongoDB as it's database.
+Project is developed using Dropbox JavaScript API and uses its storage to host audio files. All Dropobox application needs to be accepted by them, in future it will be one of the goals, currently app needs to be run on localhost
+
+Project uses node.js as it's server side and AngularJS as client framework. All dependencies and bindings are provided by npm && bower. Application uses express.js as backend framework. Communication between client and server is decoupled, provided by Websocket messages which is supported by socket.io library.
+
+Project is host locally by grunt throught nodeman. Grunt provide make-style support for js, providing functionality like autorefreshing webpage and server on every file change and monitoring.
+
+Project uses mongoDB as it's database. This NoSQL document-based database is well suited for fast, low latency write operations.
 
 #Installation Process
 ##Prerequisities
