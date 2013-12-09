@@ -1,25 +1,15 @@
 'use strict';
 
-// Declare app level module which depends on filters, and services
-
-
-
 var dropboxApp = angular.module('dropboxApp', []).config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true)
-}]).
-service('Files',function () {
+}]).service('Files',function () {
     return [];
-
-}).
-service('Playlist',function () {
+}).service('Playlist',function () {
     return [];
-
-}).
-service('Audio',function () {
+}).service('Audio',function () {
     return $('#player_audio').get(0);
-
-}).
-service('DropboxClient', function () {
+}).service('DropboxClient', function () {
+    
     var clientLocal = new Dropbox.Client({
         key: "mopkmj33l694335",
         secret: "rw4s5jejxcvng8l"
@@ -49,6 +39,8 @@ service('DropboxClient', function () {
         user: "",
         client: clientLocal
     };
+    
+
 
     return dropboxClient;
 }).factory('socket', function ($rootScope) {
@@ -75,13 +67,14 @@ service('DropboxClient', function () {
     };
 });;
 
-dropboxApp.controller('DropboxController', function ($scope, DropboxClient, Files) {
+dropboxApp.controller('DropboxController', function ($scope, socket, DropboxClient, Files) {
     var path="/Aplikacje/Audiosync"
     DropboxClient.client.getAccountInfo(function(error, accountInfo) {
         if (error) {
             return showError(error);
         }
         DropboxClient.user = accountInfo.uid;
+        socket.emit('dropboxLoaded', {user: DropboxClient.user});
     });
 
     DropboxClient.client.readdir(path, function(error, entries) {
@@ -103,7 +96,6 @@ dropboxApp.controller('DropboxController', function ($scope, DropboxClient, File
 
             $scope.$apply();
         });
-
       }); 
     });
 });
@@ -112,7 +104,7 @@ dropboxApp.controller('PlaylistController', function ($scope, $timeout, DropboxC
     $scope.playlist = Playlist;
 
     var checkTime=true;
-var lastTime=true;
+    var lastTime=true;
 
     $scope.PlayFile = function PlayFile(index) {
 
@@ -124,7 +116,6 @@ var lastTime=true;
                 user: DropboxClient.user}
                 );
             $("#player_audio").attr("src",Playlist[index].source);
-
             Audio.load();
             Audio.play();
             $scope.counter = 0;
@@ -156,37 +147,42 @@ var lastTime=true;
             }
         }
 
-        $scope.RemoveFromPlaylist = function RemoveFromPlaylist(index) {
+        $scope.RemoveFromPlaylist = function(index) {
          Playlist.splice(index, 1);
      }
-
                socket.on('mongo:haveRecord', function (message) {
-                console.log(message.title+":"+message.time);
-                $("#player_audio").bind('canplay', function() {
-                this.currentTime = message.time; // jumps to 29th secs
-            });
-                
-            });
-  
+               console.log(message.title+":"+message.time);
+               $("#player_audio").bind('canplay', function() {
+               this.currentTime = message.time; // jumps to 29th secs
+            }); 
+        });
  });
 
 
 
 
-dropboxApp.controller('FilesController', function ($scope, Files, Playlist, socket) {
+dropboxApp.controller('FilesController', function ($scope, Files, DropboxClient, Playlist, socket) {
     $scope.message = '';
     $scope.messages = [];
-
+    var wasInside=false;
     $scope.files = Files;
 
-
-    $scope.TestSockets = function (index) {
-
-
-    }
+    socket.on('mongo:savedPlaylist', function (message) {
+if(!wasInside)
+           message.forEach(function(entry){
+              
+                Files.forEach(function(entry2){
+                    if(entry.title==entry2.name) {
+                        Playlist.push(entry2);
+                        wasInside=true;}
+                })           
+           })
+    });
 
     $scope.AddToFileToPlaylist = function (index) {
         Playlist.push(Files[index]);
+        var message={title: Files[index].name, user: DropboxClient.user}
+        socket.emit('addToPlaylist',message);
     }
 });
 

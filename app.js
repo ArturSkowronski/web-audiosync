@@ -13,7 +13,7 @@
  path = require('path');
 
 var databaseUrl = "mydb"; // "username:password@example.com/mydb"
-var collections = ["users", "reports"]
+var collections = ["users", "playlist","reports"]
 var db = require("mongojs").connect(databaseUrl, collections);
 /**
  * Configuration
@@ -60,8 +60,11 @@ server.listen(3000, function () {
 	console.log('Express server listening on port ' + app.get('port'));
 });
 
+var clients = [];
 
 io.sockets.on('connection', function (socket) {
+	clients.push(socket.id); 
+	console.log(clients);
 	socket.on('mongo:get', function(data) {
 		console.log(data.title, data.user); 
 		var hash= crypto.createHash('md5').update(data.title+data.user).digest("hex");
@@ -74,12 +77,37 @@ io.sockets.on('connection', function (socket) {
 		})
 	});
 
+	socket.on('dropboxLoaded', function(data) {
+	console.log("getPlaylist");
+		var collection=db.playlist.find( { user: data.user} , function(err, user) {
+			if(user!=null){
+				console.log("Emit Record")
+				socket.emit('mongo:savedPlaylist', user);
+				
+			}
+			else{
+				cosole.log("empty")			}
+
+		})
+
+	});
+
+socket.on('addToPlaylist', function(data){
+	console.log(data);
+	db.playlist.save({
+					title: data.title,  
+					user: data.user}, function(err, saved) {
+						if( err || !saved ) console.log(err);
+						else console.log("Position added");
+					});
+})
+
 	socket.on('mongo:save', function(data) {
 		console.log(data.title,	data.time, data.user); 
 		var hash= crypto.createHash('md5').update(data.title+data.user).digest("hex");
 		db.users.findOne({_id: hash}, function(err, user) {
 			if(user!=null){
-				console.log("AlreadyExists - update")
+				
 				db.users.update(
 					{_id: ""+hash},
 					{ $set:{
@@ -88,7 +116,7 @@ io.sockets.on('connection', function (socket) {
 					)
 			}
 			else{
-				console.log("Create record")
+				
 				db.users.save({
 					_id:""+hash,
 					title: data.title, time: data.time, user: data.user}, function(err, saved) {
