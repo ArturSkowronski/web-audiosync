@@ -87,7 +87,6 @@ io.sockets.on('connection', function (socket) {
 			}
 			else{
 				cosole.log("empty")			}
-
 		})
 
 	});
@@ -99,7 +98,21 @@ socket.on('addToPlaylist', function(data){
 					user: data.user}, function(err, saved) {
 						if( err || !saved ) console.log(err);
 						else console.log("Position added");
+						var message=data.title;
+						console.log(io.sockets.clients().length)
+						socket.broadcast.emit('server:addToPlaylist',message)
+						socket.emit('server:addToPlaylist',message)
 					});
+})
+
+socket.on('deleteFromPlaylist', function(data){
+console.log("deleteFromPlaylist "+data.title);
+	db.playlist.remove({
+					title: data.title,  
+					user: data.user});
+	var message=data.title;
+	socket.broadcast.emit('server:deleteFromPlaylist',message)
+	socket.emit('server:deleteFromPlaylist',message)
 })
 
 	socket.on('mongo:save', function(data) {

@@ -74,10 +74,10 @@ dropboxApp.controller('DropboxController', function ($scope, socket, DropboxClie
             return showError(error);
         }
         DropboxClient.user = accountInfo.uid;
-        socket.emit('dropboxLoaded', {user: DropboxClient.user});
     });
-
+    
     DropboxClient.client.readdir(path, function(error, entries) {
+        var socketFunctionSet=0;
         if (error) {
             return showError(error);  // Something went wrong.
         }
@@ -92,9 +92,16 @@ dropboxApp.controller('DropboxController', function ($scope, socket, DropboxClie
                 'lastListened': '02.12.2012 09:30',
                 'source': data.url,
                 'currentPosition': '02:12'
-            });
+          });
 
             $scope.$apply();
+        socketFunctionSet++;
+        console.log(socketFunctionSet+' dropboxLoaded '+entries.length);
+        if(socketFunctionSet==entries.length){
+            console.log('dropboxLoaded');
+            socket.emit('dropboxLoaded', {user: DropboxClient.user});
+        }
+        
         });
       }); 
     });
@@ -147,9 +154,8 @@ dropboxApp.controller('PlaylistController', function ($scope, $timeout, DropboxC
             }
         }
 
-        $scope.RemoveFromPlaylist = function(index) {
-         Playlist.splice(index, 1);
-     }
+        
+            
                socket.on('mongo:haveRecord', function (message) {
                console.log(message.title+":"+message.time);
                $("#player_audio").bind('canplay', function() {
@@ -164,26 +170,57 @@ dropboxApp.controller('PlaylistController', function ($scope, $timeout, DropboxC
 dropboxApp.controller('FilesController', function ($scope, Files, DropboxClient, Playlist, socket) {
     $scope.message = '';
     $scope.messages = [];
-    var wasInside=false;
     $scope.files = Files;
 
-    socket.on('mongo:savedPlaylist', function (message) {
-if(!wasInside)
+    console.log("socketInitializated");
+        socket.on('mongo:savedPlaylist', function (message) {
+           console.log("savedPlaylist");
+           console.log(message);
+           console.log("currentEntries");
+           console.log(Files);
            message.forEach(function(entry){
-              
                 Files.forEach(function(entry2){
+                               console.log("savedPlaylist");
+
                     if(entry.title==entry2.name) {
+
                         Playlist.push(entry2);
-                        wasInside=true;}
+                        }
                 })           
            })
     });
 
+    socket.on('server:addToPlaylist', function (message) {
+         console.log("addToPlaylist");
+        Files.forEach(function(entry2){
+                    if(message==entry2.name) {
+                        Playlist.push(entry2);
+        }
+                })           
+    });
+
+   socket.on('server:deleteFromPlaylist', function (message) {
+         console.log("deleteFromPlaylist");
+         var y=0;
+          
+
+        Playlist.forEach(function(entry2){
+            if(message==entry2.name) {
+                  console.log(message+";"+entry2.name+";"+y);
+                Playlist.splice(y,1);
+                }
+             y++;
+                })           
+    });
+
     $scope.AddToFileToPlaylist = function (index) {
-        Playlist.push(Files[index]);
         var message={title: Files[index].name, user: DropboxClient.user}
         socket.emit('addToPlaylist',message);
     }
+    $scope.RemoveFromPlaylist = function(index) {
+        var message={title: Playlist[index].name, user: DropboxClient.user}
+        socket.emit('deleteFromPlaylist',message);
+       }
 });
 
 
